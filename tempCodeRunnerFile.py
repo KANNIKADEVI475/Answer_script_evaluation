@@ -1,0 +1,1 @@
+cv2.imread("output/gray.jpg",gray)
