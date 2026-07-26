@@ -1,0 +1,196 @@
+Part-A 1. C) Contractive Autoencoder
+2. Single
+3. True
+4. Summarizing input behavior
+5. False
+6. Cell states
+7. b) Segmentation
+8. True
+9. CNN, CNN
+10. a) Video classification
+11. False
+12. Previous words POWERING THE YOUTH EMPOWERING THE NATION
+
+Part-B 13) Standard and Sparse Autoencoders: 
+Standard Autoencoders are neural networks which compress the input data, reducing noise and reconstruct as the original image. 
+Sparse Autoencoders can manage the underfit/overfit problems compared to Standard Autoencoders. 
+Two Main Components: 
+i) Encoder - Compresses the input 
+ii) Decoder - Reconstructs the data
+
+14) Generative Adversarial Networks: (GAN) 
+It is a variant of Generative model. Purpose is to Generate data normally. While GRU produces sequential data, complexity level is high and it is an adversarial training. It has No Memory like GRU. Very suitable for real-world applications. It is very effective because of their two main components, 
+i) Generator - creates a fake video 
+ii) Discriminator - identifies real or fake 
+15) Image captioning Models is YOUTH EMPOWERING THE NATION 
+Image captioning is the important Process which extracts the text from the image and produce the caption. 
+For this attention mechanism plays vital role and made a huge impact in the image captioning Models which further improves the performance.
+
+18) 15TM Model: 
+Part-c 型 
+* LSTM stands for Long short term Memory 
+* LSTM is a special type of RNN Model to learn long-form dependencies in a sequential data. 
+* In this caption generation, LSTM is used to process video frames because each frame is a sequential data and Remember the past information. 
+What is caption generation for video frames 
+* It is a process in which, 
+- 1 video frame is taken as input 
+- LSTM process each frames 
+- Generate captions 
+Why LSTM is used? 
+i) To process sequential data 
+ii) keep in Memory of Previous information 
+My identifies meaningful content in the 
+* Unlike RNN, overcome the problem of Long-form dependencies.
+
+1 1STM has a cell states (Ulong-term Memory Storage) and gates which controls the Overflow. 
+Architecture of LSTM: 
+C+-1 h+-1 
+1 7 cell state tank 
+Ot > > C+ !- " FE 
+Forgel Gate WA •sig sig sig 
+Itanh sig ONY 
+xt HE YOUTH HOWERING 
+Sie you CHAOWERING THE RATION 
+I input Gate >ht 
+Output Gate LSTM cell 
+①-point-by-point multiplication 
+sig-> sigmoid function 
+①->point by point addition 
+tanh > tank function 
+- vector connection 
+118 
+
+Four Main parts: 
+i) cell state - long-term memory 
+ii) input Gate - new info is added 
+iii) output Gate - Output produced 
+iv) Forget Gate & remove unwanted into working Process in caption Generation: 
+1. Take input as a video frames preprocessing 
+2. Separate each frames from that video in a Sequential order 
+3. Extract features from the image 
+4. Apply LSTM to food feature. 
+- which makes the image as sequence one by one 
+5. Find the next word The previous frame as 
+6. Extract the words one by one 
+7. Combine words to form the complete sequence 
+This was the working procedure of LSTM in this caption Generation from the video frames
+
+(code: import numpy as np 
+import matplotlib.pyplot as plt 
+from tensorflow.keras.models import Sequential 
+from tensorflow.keras.layers import LSTM, Dense 
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, UpSampling2D 
+X_train = np.random.randint(20, 20, (100, 10)) 
+noise = 0.5 * X_train 
+noisy_image = X_train + noise 
+models = Sequential() 
+models.add(Conv2D((3, 3), activation='relu', padding='same', input_shape=(10, 10))) 
+models.add(MaxPooling2D(padding='same')) 
+models.add(Conv2D((3, 3), activation="relu", padding='same')) 
+models.add(UpSampling2D()) 
+models.add(Conv2D((2, 2), (3, 3), padding='same', activation='relu')) 
+models.compile(activation='relu', loss="binary_crossentropy", accuracy=[metrics]) 
+models.fit(x_train, noisy_image, epochs=5) 
+for i in range(5): 
+    fig, subplot = plt.subplots(3, 3) 
+    plt.imshow(x_train[:, :, i]) 
+    plt.title("Original image") 
+    plt.axis("off") 
+    plt.subplot(3, 3, 2) 
+    plt.imshow(noisy_image[:, :, i]) 
+    plt.title("Noised image") 
+    plt.axis("off") 
+    plt.subplot(3, 3, 3) 
+    plt.imshow(decoded[:, :, i]) 
+    plt.title("Reconstructed image") 
+    plt.axis("off") 
+    decoded = models.predict(x_noisy[:, :, i]) 
+    print(decoded) 
+
+16) GRU architecture: 
+It + GRU is a special type of RNN and is used in time-series, text, image etc like it will always access a sequential data to produce an an predicted output 
+
+* GRU is a variant of RNAS | architecture data 
+Purpose is to process an sequential compared to GAN, it is simpler complexity and Normal training. 
+Especially GRU has a gates which Maintains / controls the flow of Memory а 
+* The Main important concept in this model is accessing the seamential data in secuence order that is one by one which improves the further performance of the model. 
++ It solves the problem of long-term dependencies and also ability to Model sequential, dependencies. 
+For example: EMPOWERING THE NATION - Text Generation - Predicts the next word by the previous input > This can be that is words is accessed by sequential order like one by one...
+
+Input Layer input node 04 Architecture: 
+Output layer outpry node 
+Recurrent und . 
+Recurrent node Hidden/ Recurrent layer 
+POWERING THE YOUTH EMPOWERING THE NATION 
+* Each layer performs the specific task in each step and in which hidden layer act as a Recurrent unit and it is also called as Recurrent layer. 
+By this GRU architecture for time-series forecasting and ability to Model sequential dependencies implemented in a efficient way.
+
+Part-D 19)a) Denoising autoencoder: 
+network. се 
+1) Autoencoder is a type of Neural (1) 
+Autoencoder is the process of input data and reconstrunt as the compress the original image. 
+111) there compressing defines the reducing. 
+noise or remove unwanted features (V) 
+Here, there are two main parts working under the autoencoder, 
+* Encoder 
+* • Decoder 
+V) Encoder compress the input data 
+which we will given as a input vis Decoder 
+reconstruct as a original input data and finally compared with the Original input data. 
+Viry Need for autoencoder is applied in real time world applications like removing the noise which makes the output clearly and produces an expected output.
+
+Architecture: 
+7 T X3] fa, ×4. ट्र X5 
+Bottleneck الا. 
+P уб 
+Input layer 
+POWERING THE YOUTH EMPOWERING THE NATION 
+Уб 
+Output layer 
+Here, Bottleneck extracts the important feature in the model. 
+Denoising autechcoder. 
+* It is a process in which nosse is removed from the image and reconstruct. 
+as a original image. 
+* If Makes the final output as a expected one. 
+Architecture: 
+2 411 encoder decoder image noisy image 
+Working process: 
+9. Input as a image 
+2. Input noise to the data 
+EMPOWERING THE NATION 
+* {! 
+3 combine noisy date with input bi encoder / extract features 
+5. decoder - Upscaling the image 
+6. Increase the size of the image 
+6. Final output 
+Output
+
+(code: import numpy as np 
+import matplotlib.pyplot as plt 
+from tensorflow.keras.models import Sequential 
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, UpSampling2D 
+X_train = np.random.randint(20, 20, (100, 10)) 
+noise = 0.5 * X_train 
+noisy_image = X_train + noise 
+models = Sequential() 
+models.add(Conv2D((3, 3), activation='relu', padding='same', input_shape=(10, 10))) 
+models.add(MaxPooling2D(padding='same')) 
+models.add(Conv2D((3, 3), activation="relu", padding='same')) 
+models.add(UpSampling2D()) 
+models.add(Conv2D((2, 2), (3, 3), padding='same', activation='relu')) 
+models.compile(activation='relu', loss="binary_crossentropy", accuracy=[metrics]) 
+models.fit(x_train, noisy_image, epochs=5) 
+for i in range(5): 
+    fig, subplot = plt.subplots(3, 3) 
+    plt.imshow(x_train[:, :, i]) 
+    plt.title("Original image") 
+    plt.axis("off") 
+    plt.subplot(3, 3, 2) 
+    plt.imshow(noisy_image[:, :, i]) 
+    plt.title("Noised image") 
+    plt.axis("off") 
+    plt.subplot(3, 3, 3) 
+    plt.imshow(decoded[:, :, i]) 
+    plt.title("Reconstructed image") 
+    plt.axis("off") 
+    decoded =
