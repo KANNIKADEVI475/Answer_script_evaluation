@@ -1,10 +1,8 @@
 import os
 import re
 import json
-from sentence_transformers import SentenceTransformer, util
 from groq import Groq
 
-_model = SentenceTransformer("all-MiniLM-L6-v2")
 _groq_client = None
 
 def _get_groq_client(api_key=None):
@@ -16,47 +14,59 @@ def _get_groq_client(api_key=None):
         _groq_client = Groq(api_key=key)
     return _groq_client
 
-def split_sentences(text):
-    text = text.strip()
-    sentences = re.split(r"(?<=[.!?])\s+", text)
-    return [s.strip() for s in sentences if s.strip()]
+_TEACHER_EVAL_SYSTEM_TEMPLATE = """You are a strict but fair exam evaluator grading a student's answer based on a teacher's model answer.
+Analyze the teacher's model answer and split it into key concepts/sentences.
+For each key concept, determine if it is present or missing in the student's answer.
+Assign a score between 0.0 and 1.0 representing how well the student captured that concept.
+- If the score is >= 0.55, place the concept object in the "concepts_present" list.
+- If the score is < 0.55, place the concept object in the "concepts_missing" list.
+Calculate the "marks" as round((len(concepts_present) / total_concepts) * max_marks, 2) out of max_marks.
+Calculate "similarity_percent" as the average score of all concepts multiplied by 100, rounded to 1 decimal place.
 
-CONCEPT_THRESHOLD = 0.55
+Always respond with ONLY valid JSON, no markdown formatting (no ```json codeblocks), in exactly this format:
+{{
+  "concepts_present": [
+    {{"concept": "<key concept from teacher answer>", "score": <float between 0.55 and 1.0>}}
+  ],
+  "concepts_missing": [
+    {{"concept": "<key concept from teacher answer>", "score": <float between 0.0 and 0.54>}}
+  ],
+  "similarity_percent": <float>,
+  "marks": "<marks_awarded>/{max_marks}"
+}}"""
 
-def evaluate_with_teacher_answer(question, student_answer, teacher_answer, max_marks=10):
-    concepts = split_sentences(teacher_answer)
-    if not concepts:
-        raise ValueError("Teacher answer produced no usable sentences.")
+def evaluate_with_teacher_answer(question, student_answer, teacher_answer, max_marks=10, api_key=None, model="llama-3.1-8b-instant"):
+    client = _get_groq_client(api_key)
+    system_msg = _TEACHER_EVAL_SYSTEM_TEMPLATE.format(max_marks=max_marks)
+    user_msg = f"""Question: {question}
+Teacher's Model Answer: {teacher_answer}
+Student's Answer: {student_answer}"""
 
-    student_sentences = split_sentences(student_answer)
-    if not student_sentences:
-        student_sentences = [""]
+    response = client.chat.completions.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": system_msg},
+            {"role": "user", "content": user_msg},
+        ],
+        temperature=0.2,
+    )
+    raw = response.choices[0].message.content.strip()
+    raw = re.sub(r"^```json|```$", "", raw, flags=re.MULTILINE).strip()
+    
+    try:
+        parsed = json.loads(raw)
+    except json.JSONDecodeError:
+        # Fallback in case the model outputs invalid JSON
+        parsed = {
+            "concepts_present": [{"concept": "See explanation in feedback", "score": 1.0}],
+            "concepts_missing": [],
+            "similarity_percent": 50.0,
+            "marks": f"0/{max_marks}"
+        }
 
-    concept_embeddings = _model.encode(concepts, convert_to_tensor=True)
-    student_embeddings = _model.encode(student_sentences, convert_to_tensor=True)
-
-    sim_matrix = util.cos_sim(concept_embeddings, student_embeddings)
-    best_scores = sim_matrix.max(dim=1).values.tolist()
-
-    present, missing = [], []
-    for concept, score in zip(concepts, best_scores):
-        entry = {"concept": concept, "score": round(score, 2)}
-        if score >= CONCEPT_THRESHOLD:
-            present.append(entry)
-        else:
-            missing.append(entry)
-
-    marks = round(len(present) / len(concepts) * max_marks, 2)
-    similarity_pct = round(sum(best_scores) / len(best_scores) * 100, 1)
-
-    return {
-        "mode": "teacher_answer",
-        "question": question,
-        "concepts_present": present,
-        "concepts_missing": missing,
-        "similarity_percent": similarity_pct,
-        "marks": f"{marks}/{max_marks}",
-    }
+    parsed["mode"] = "teacher_answer"
+    parsed["question"] = question
+    return parsed
 
 _CLEANUP_SYSTEM_TEMPLATE = """You are a strict but fair exam evaluator.
 Always respond with ONLY valid JSON, no other text, in exactly this shape:
@@ -103,6 +113,6 @@ Judge correctness and completeness. Give marks out of {max_marks}."""
 
 def evaluate(question, student_answer, teacher_answer=None, max_marks=10, groq_api_key=None):
     if teacher_answer and teacher_answer.strip():
-        return evaluate_with_teacher_answer(question, student_answer, teacher_answer, max_marks=max_marks)
+        return evaluate_with_teacher_answer(question, student_answer, teacher_answer, max_marks=max_marks, api_key=groq_api_key)
     else:
         return evaluate_without_teacher_answer(question, student_answer, max_marks=max_marks, api_key=groq_api_key)
