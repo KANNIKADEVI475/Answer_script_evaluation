@@ -11,27 +11,62 @@ import json
 
 
 def run_pipeline(answer_pdf_path, groq_api_key=None):
+    import fitz
+    import cv2
+    import numpy as np
+    import os
+    import gc
 
     # -------------------------------
-    # Step 1: Convert PDF to Images
-    # -------------------------------
-    raw_images = pdf_to_images(answer_pdf_path)
-
-    # -------------------------------
-    # Step 2: Image Preprocessing
-    # -------------------------------
-    clean_images = preprocess_images(raw_images)
-
-    # -------------------------------
-    # Step 3: OCR
+    # Step 1, 2, 3: Convert, Preprocess & OCR page-by-page
     # -------------------------------
     page_texts = []
-
-    for idx, image in enumerate(clean_images):
-        text = ocr_image(image)
+    
+    doc = fitz.open(answer_pdf_path)
+    num_pages = len(doc)
+    print(f"Starting page-by-page processing of {num_pages} pages...")
+    
+    output_dir = "output"
+    os.makedirs(output_dir, exist_ok=True)
+    
+    for idx in range(num_pages):
+        page = doc[idx]
+        
+        # 1. Convert PDF page to image (zoom=3)
+        pix = page.get_pixmap(matrix=fitz.Matrix(3, 3))
+        img_array = np.frombuffer(pix.samples, dtype=np.uint8).reshape(pix.height, pix.width, pix.n)
+        if pix.n == 4:
+            img = cv2.cvtColor(img_array, cv2.COLOR_RGBA2BGR)
+        else:
+            img = cv2.cvtColor(img_array, cv2.COLOR_RGB2BGR)
+            
+        pix = None # Free pixmap memory
+        
+        # 2. Preprocess image (2x resize & CLAHE contrast adjustment)
+        resized = cv2.resize(img, None, fx=2, fy=2)
+        img = None # Free raw image
+        
+        gray = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
+        resized = None # Free resized image
+        
+        clahe = cv2.createCLAHE(clipLimit=1.5, tileGridSize=(8, 8))
+        contrast = clahe.apply(gray)
+        gray = None # Free grayscale image
+        
+        # Save output image
+        cv2.imwrite(f"{output_dir}/page_{idx + 1}.jpg", contrast)
+        
+        # 3. Perform OCR
+        text = ocr_image(contrast)
+        contrast = None # Free contrast image
+        
         page_texts.append(text)
-        print(f"OCR completed for page {idx + 1}")
+        print(f"OCR completed for page {idx + 1} / {num_pages}")
+        
+        # Force garbage collection to release memory immediately
+        gc.collect()
 
+    doc.close()
     full_raw_text = "\n\n".join(page_texts)
 
     # -------------------------------
