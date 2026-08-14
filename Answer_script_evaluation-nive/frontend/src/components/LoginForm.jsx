@@ -51,14 +51,14 @@ function LoginForm() {
 
       <input
         type="text"
-        placeholder="Faculty ID"
+        placeholder="Faculty ID- IT101"
         value={faculty_id}
         onChange={(e) => setFaculty(e.target.value)}
       />
 
       <input
         type="password"
-        placeholder="Password"
+        placeholder="Password- 1234"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
