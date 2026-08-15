@@ -26,7 +26,8 @@ function History() {
   }, []);
 
   const handleExportExcel = () => {
-    window.open("http://127.0.0.1:8000/excel/download", "_blank");
+    const baseURL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+    window.open(`${baseURL}/excel/download`, "_blank");
   };
 
   return (

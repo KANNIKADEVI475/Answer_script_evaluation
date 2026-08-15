@@ -1,17 +1,20 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import api from "../services/api";
 
 function HistoryDetails() {
   const { id } = useParams();
 
   const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/history/${id}`)
-      .then((r) => r.json())
-      .then(setData);
+    api.get(`/history/${id}`)
+      .then((r) => setData(r.data))
+      .catch((err) => setError(err.message));
   }, [id]);
 
+  if (error) return <h2>Error loading details: {error}</h2>;
   if (!data) return <h2>Loading...</h2>;
 
   return (
