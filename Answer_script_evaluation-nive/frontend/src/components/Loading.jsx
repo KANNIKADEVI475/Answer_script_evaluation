@@ -20,7 +20,7 @@ function Loading() {
 
         if (data.message === "✅ Evaluation Completed") {
           setTimeout(() => {
-            navigate("/results");
+            navigate("/history");
           }, 1000);
         }
       } catch (err) {

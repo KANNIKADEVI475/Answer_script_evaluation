@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
+import Loading from "./Loading";
 
 function UploadCard() {
   const navigate = useNavigate();
@@ -54,6 +55,10 @@ function UploadCard() {
       setLoading(false);
     }
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="upload-card">
