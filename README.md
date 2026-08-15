@@ -35,6 +35,8 @@ An automated, intelligent web application designed to evaluate handwritten unive
 ```
 
 ---
+## Workflow
+<img width="580" height="848" alt="image" src="https://github.com/user-attachments/assets/9c2cdb2c-6442-453b-acd8-77066930d4b7" />
 
 ## ⚙️ Configuration & Environment Variables
 
