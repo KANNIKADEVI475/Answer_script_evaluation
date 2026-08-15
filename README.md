@@ -44,8 +44,7 @@ An automated, intelligent web application designed to evaluate handwritten unive
 | :--- | :--- | :--- |
 | `GOOGLE_API_KEY` | String | Google Cloud API key authorized for the **Cloud Vision API** (OCR). |
 | `GROQ_API_KEY` | String | Groq Cloud API key authorized for LLM reasoning. |
-| `DATABASE_URL` | String | *(Optional)* Connection URL for database persistence (e.g. SQLite persistent path or PostgreSQL URL). Defaults to local SQLite `evaluation.db`. |
-| `ALLOWED_ORIGINS` | String | *(Optional)* Comma-separated list of allowed frontend domains. Defaults to localhost and the production Vercel app. |
+
 
 ### Frontend Environment Variables (`frontend/.env`)
 
@@ -97,21 +96,4 @@ An automated, intelligent web application designed to evaluate handwritten unive
 
 ---
 
-## 🌐 Production Cloud Deployment
 
-### 1. Backend (Render / Railway)
-* **Language Runtime**: Python 3.10+
-* **Root Directory**: `Answer_script_evaluation-nive/backend`
-* **Build Command**: `pip install -r requirements.txt`
-* **Start Command**: `uvicorn app:app --host 0.0.0.0 --port $PORT`
-* **Environment Variables**: Add your `GOOGLE_API_KEY` and `GROQ_API_KEY` in the service settings.
-* **SQLite Persistence (Crucial for Render/Railway)**:
-  * Attach a **Persistent Volume** mounted at `/var/data`.
-  * Add the environment variable: `DATABASE_URL=sqlite:////var/data/evaluation.db` (note the 4 slashes).
-
-### 2. Frontend (Vercel / Netlify)
-* **Framework Preset**: Vite / React
-* **Root Directory**: `Answer_script_evaluation-nive/frontend`
-* **Build Command**: `npm run build`
-* **Output Directory**: `dist`
-* **Environment Variables**: Add `VITE_API_URL` pointing to your deployed Render backend (e.g. `https://your-service.onrender.com`).
