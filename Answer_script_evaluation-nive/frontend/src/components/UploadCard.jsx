@@ -46,7 +46,7 @@ function UploadCard() {
         JSON.stringify(response.data.results),
       );
 
-      navigate("/results");
+      navigate("/history");
     } catch (err) {
       console.error(err);
       alert("Evaluation Failed");

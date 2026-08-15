@@ -8,7 +8,9 @@ function Login() {
 
         <p>
           Automated Evaluation of University Answer Scripts using OCR and
-          Artificial Intelligence.
+          Artificial Intelligence.<br/>
+          username:IT101<br/>
+          pwd:1234<br/>
         </p>
 
         <img src="https://undraw.co/api/illustrations" alt="" />
