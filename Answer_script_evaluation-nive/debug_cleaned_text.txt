@@ -1,0 +1,42 @@
+1. Answer all the Questions
+Part A - (12*0.5=6 Marks) Maximum: 50 Marks
+network is designed to reduce overfitting by penalizing the Jacobian of the encoder output.
+a) Sparse Autoencoder
+b) Denoising Autoencoder
+c) Contractive Autoencoder
+d) VAE
+2. A Deep Boltzmann Machine is a generative model composed of multiple layers of variables.
+3. Say True or False: Standard autoencoders always learn a probabilistic latent space.
+4. The encoder in a sequence-to-sequence model is responsible for:
+a) Predicting output directly
+b) Mapping output to input
+c) Summarizing input sequence
+d) Generating noise
+5. Say True or False: Adversarial training involves only supervised learning principles.
+6. GRU architecture simplifies LSTM by merging the and input gates.
+7. technique is used for separating an image into distinct regions based on object boundaries.
+a) Captioning
+b) Segmentation
+c) Detection
+d) Translation
+8. Say True or False: Recursive Neural Networks are typically used for sentiment analysis at the sentence and phrase level.
+9.
+10. generation models use LSTM networks to produce text responses in a conversation.
+task uses both CNN and LSTM together to generate textual context from visuals.
+a) Video classification
+b) Image captioning
+c) Object tracking
+d) Opinion mining
+11. Say True or False: Convolutional Neural Networks are used for Named Entity Recognition tasks.
+12. In opinion mining, recurrent architectures help to retain across word sequences.
+Part B - (3*2=6 Marks)
+13. Compare the performance of standard Autoencoders vs. Sparse Autoencoders on high-dimensional data.
+14. Determine the suitability of Generative Adversarial Networks (GANS) for real-world applications such as image enhancement and generation.
+15. Interpret the impact of attention mechanisms in improving the performance of image captioning models.
+Part C - (2*14=28 Marks)
+16. Evaluate the suitability of GRU architecture for time-series forecasting by examining its structure and ability to model sequential dependencies.
+17. Demonstrate the implementation of Named Entity Recognition (NER) using deep learning, and explain the steps involved in identifying entities in a text.
+18. Apply an LSTM model to generate captions for video frames after preprocessing the video dataset.
+Part D - (1*10=10 Marks)
+19. a) Demonstrate the implementation of a Denoising Autoencoder for image reconstruction by outlining the key steps in training and testing the model with noisy image data. (OR)
+19. b) Develop a deep learning model using the VGG16 pre-trained architecture to classify images of fruits into three categories: Apple, Banana, and Orange.

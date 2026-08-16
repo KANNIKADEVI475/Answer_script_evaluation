@@ -24,7 +24,7 @@ async def evaluate(
 
         file_path = os.path.join(
             UPLOAD_FOLDER,
-            answer_script.filename
+            os.path.basename(answer_script.filename)
         )
 
         with open(file_path, "wb") as buffer:
