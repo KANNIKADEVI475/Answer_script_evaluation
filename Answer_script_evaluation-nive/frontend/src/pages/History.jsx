@@ -68,17 +68,17 @@ function History() {
             {history.map((item) => (
               <tr key={item.id}>
                 <td>{item.id}</td>
-
                 <td>{item.student_name}</td>
-
                 <td>{item.register_number}</td>
-
                 <td>{item.total_marks}</td>
-
                 <td>{item.filename}</td>
-
-                <td>{new Date(item.uploaded_at).toLocaleString()}</td>
-
+                <td>
+                  {new Date(item.uploaded_at).toLocaleString("en-IN", {
+                    timeZone: "Asia/Kolkata",
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  })}
+                </td>
                 <td>
                   <button onClick={() => navigate(`/history/${item.id}`)}>
                     👁 View
